@@ -64,6 +64,21 @@ def bye():
 
 greet("Bob")
 
+"""
+    快速排序
+    （将无序数组中的元素按照从小到大的顺序排序之后打印出）
+"""
+def quicksort(array):
+    if len(array) < 2:
+        return array  # 基线条件，为空的时候，或者只包含一个元素的时候，数组本身是有序的
+    else:
+        privot = array[0]  # 递归条件。（也叫基准值，取数组中第一个元素为基准值，也可以取其他的数值作为基准值）
+        less = [i for i in array[1:] if i <= privot]  # 将小于基准值/递归条件的数组放在基准值/递归条件的左边
+        greater = [i for i in array[1:] if i > privot]  # 将大于基准值/递归条件的数组放在基准值/递归条件的右边
+        return quicksort(less) + [privot] + quicksort(greater)  # quicksort(less)，quicksort(greater)重新排序，将左边，基准值，右边的数组重新返回
+
+array = [12,2,3,0,1,4,10,21,23]
+print(quicksort(array))
 
 
 
