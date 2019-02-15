@@ -82,3 +82,39 @@ print(quicksort(array))
 
 
 
+
+"""
+    python中散列表的实现为字典{},使用一对大括号来表示，键必须是唯一的
+    例子：检测投票名单是否重复
+    别忘了，如果你将已投票者的姓名存储在列表中，这个函数的速度终将变得非常慢，因为它
+    必须使用简单查找搜索整个列表。但这里将它们存储在了散列表中，而散列表让你能够迅速知道
+    来投票的人是否投过票。使用散列表来检查是否重复，速度非常快
+"""
+votes = {}  # 只有设置为全局字典时,才能正确识别出是否存在，因为此时main方法中的votes是跟全局的字典中的键值对进行比较
+def check_vote(name):
+    if votes.get(name):
+        print("Kick Out!")  # 已经投过票了
+    else:
+        votes[name] = True
+        print("Let them vote!") # 之前没有投过票
+def test():
+    book = dict()  # 创建散列表
+    book['apple'] = 1.90
+    book['orange'] = 9.12
+    book['peaple'] = 2.39
+    # print(book)
+
+    phone_book ={} # 与dict()含义相同
+    phone_book["jenny"] = 8675309
+    phone_book["jack"] = 8982311
+    phone_book["tom"] = 2783162
+    print(phone_book)
+
+check_vote("Tom")
+check_vote("Bob")
+check_vote("Lily")
+check_vote("Tom")
+
+
+
+
