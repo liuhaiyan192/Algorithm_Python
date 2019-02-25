@@ -1,0 +1,39 @@
+from collections import deque
+
+"""
+    广度优先搜索
+    队列的特点：先进先出(FIFO)
+    无序存储的
+    
+"""
+# 创建队列，存储要检查的人
+graph = {}
+graph["you"] = ["Bob", "Alice", "Claire"] # "Bob", "Alice", "Claire"加入你的队列中去
+graph["Bob"] = ["Anuj", "Peggy"]  # Bob的邻居自动加到了you中
+graph["Claire"] = ["Thom", "Jonny"]  # Claire的邻居自动加到了you中
+graph["Alice"] = ["Peggy"]   # Alice的邻居自动加到了you中
+graph["Peggy"] = []
+graph["Anuj"] = []
+graph["Jonny"] = []
+graph["Thom"] = []
+
+# 判断满足哪个条件的名字为销售商
+def person_is_seller(name):
+    return name[-1] == 'y'
+
+def search(name):
+    search_deque = deque() # 创建一个队列
+    search_deque += graph[name] # 将你的邻居加到搜索队列中去
+    searched = [] # 创建一个空数组，用来记录检查过的人，避免重复检查，影响效率
+    while search_deque: # 只要队列不为空
+        person = search_deque.popleft() # 先进先出
+        if not person in searched: # 仅当这个人没有检查过时，再检查
+            if person_is_seller(person): # 判断是否为销售商，是的话，则直接打印出来
+                print("name is:"+person + "  is a seller")
+                return True # 返回True
+            else:
+                search_deque += graph[person] # 不是销售商的话，将这个人的朋友都加入搜索队列中去
+                searched.append(person)  # 标记为已经检查过了
+    return False  # 若是到了这一步返回了False,则表示此队列中并没有人是销售商
+
+search("you")
