@@ -1,0 +1,68 @@
+
+"""
+    狄克斯特拉算法
+    计算出，从初始节点到结束节点，在加权图中的最短路径
+    注意事项：必须为正加权 狄克斯特拉算法才成立，如果为负加权， 狄克斯特拉算法是不成立的，需要使用贝尔曼福德算法
+"""
+
+# 创建节点与邻居节点表
+graph = {}
+graph["start"] = {}
+graph["start"]["a"] = 6
+graph["start"]["b"] = 2
+# print(graph["start"].keys())
+graph["a"] = {}
+graph["a"]["fin"] = 1
+graph["b"] = {}
+graph["b"]["a"] = 3
+graph["b"]["fin"] = 5
+graph["fin"] = {}  # 终点没有任何邻居
+# print(graph["b"])
+
+proceed = []
+# 创建存储父节点的散列表
+parents = {}
+parents["a"] = "start"
+parents["b"] = "start"
+parents["fin"] = None
+
+# 创建存储开销表的散列表
+infinity = float("inf")
+costs = {}
+costs["a"] = 6
+costs["b"] = 2
+costs["fin"] = infinity
+
+# 找出开销最低的节点
+def find_lowest_cost_node(costs):
+    # 表示无限大的开销
+    lowest_cost = float("inf")
+    # 表示开销最小的节点
+    lowest_cost_node = None
+    for node in costs:  # 遍历开销中的节点
+        cost = costs[node]  # 开销中的节点的开销
+        # 开销中的节点的开销 小于lowest_cost，也就是说当前节点的开销更低，且开销中的节点未处理过
+        if cost < lowest_cost and node not in proceed:
+            # 将当前节点的开销视为开销最低
+            lowest_cost = cost
+            # 将当前最低开销的节点视为当前节点
+            lowest_cost_node = node
+    # 返回当前节点
+    return lowest_cost_node
+
+# 在未处理的节点中，找出开销最低的节点
+node = find_lowest_cost_node(costs)
+while node is not None:
+    cost = costs[node]  # 当前节点的开销
+    neighbors = graph[node]  # 当前节点的邻居
+    for n in neighbors.keys():  # 遍历当前节点的邻居节点的所有值
+        new_cost = cost + neighbors[n]  # 获取当前节点邻居的总开销（当前节点的开销 + 邻居节点的开销）
+        # print(neighbors[n])
+        if costs[n] > new_cost:  # 如果当前节点前往该邻居节点更近些
+            costs[n] = new_cost  # 更新该邻居节点的开销
+            parents[n] = node  # 同时将该节点的父节点设置为当前节点
+    proceed.append(node)  # 将该节点标记为处理过
+    node = find_lowest_cost_node(costs)  # 找出接下来要处理的节点，并循环
+
+
+
